@@ -24,28 +24,31 @@ def load_grid(grid_values, game_state)
     columns = "ABCDEFGHI".chars
     print "  "
     for i in columns
-        print " #{i} ".gray
+        print " #{i} ".cyan
     end
     puts ""
     
     for point_value in grid_values
         if point_value[1] == 1            
-            print "#{point_value[0]} ".gray
+            print "#{point_value[0]} ".cyan
         end
         if point_value[2] == 0
             print "[ ]".green
         end 
         if point_value[2] == "S"
-            print "   ".green
+            print "   "
         end 
         if (1..8).include?(point_value[2])
             print " #{point_value[2]} ".blue
         end 
-        if point_value[2] == "X" #and game_state == "lost"
+        if point_value[2] == "X" and game_state == "lost"
             print " #{point_value[2]} ".red
         end 
         if point_value[2] == "X" and game_state == "win"
             print " #{point_value[2]} ".magenta
+        end 
+        if point_value[2] == "X" and game_state != "lost" and game_state != "win"
+            print "   "
         end 
         if point_value[1] == 9
             puts ""
@@ -55,36 +58,40 @@ end
 
 def print_message(game_state)
     if game_state == "start"
+        puts""
         print "What grid point would you like to start at? column row eg. a1 or a 1 :"
     end
     if game_state == "win"
+        puts""
         print "Congratulations you win!!    press enter to exit "
     end
     if game_state == "lost"
+        puts""
         print "Sorry you lost..  press enter to exit "
     end
     if game_state == "running"
+        puts""
         print "What grid point do you think does not have a mine?  "
     end
     if game_state == "invalid input"
+        puts""
         print "invalid input try again:  column row eg. a1 or a 1 "
     end
 end
 
 def check_user_input(user_input)
     passback = []
+    passback[0] = false
     user_input = user_input.strip.gsub(/[^0-9a-z ]/i, '').delete(' ').chars
     if ("a".."i").to_a.include?(user_input[0].downcase) == true and (1..9).include?(user_input[1].to_i) == true
         passback[0] = true
         passback[1] = user_input[0].downcase
         passback[2] = user_input[1].to_i
-    else
-        passback[0] = false
     end
     return passback
 end
 
-def create_first_game_grid(grid_values, user_input)
+def alfa_to_int_and_swap(user_input)
     alfa = 1
         for i in ("a".."i")
             if user_input[0] == i
@@ -94,12 +101,17 @@ def create_first_game_grid(grid_values, user_input)
         end
     #swap user imput from cl column row to row column
     user_input[0], user_input[1] = user_input[1], user_input[0]
+end
+
+
+def create_first_game_grid(grid_values, user_input)
+    user_input = alfa_to_int_and_swap(user_input)
     user_input << "S"
     start_pos = grid_values.index(user_input)
     user_input[2] = 0
-    grid_values[start_pos] = user_input.clone
+    grid_values[start_pos] = user_input.map(&:clone)
     grid_values = load_mine_poses(grid_values, user_input)
-    return ["running", grid_values]
+    return grid_values
 end 
 
 def load_mine_poses(grid_values, start_ops)
@@ -111,7 +123,7 @@ def load_mine_poses(grid_values, start_ops)
         if exemption_list.include?(mine_test) == false
             mines_placed = mines_placed + 1
             exemption_list << mine_test
-            mine_test = mine_test.clone
+            mine_test = mine_test.map(&:clone)
             mine_test << "S"
             mine_pos = grid_values.index(mine_test)
             mine_test[2] = "X"
@@ -136,24 +148,108 @@ def get_poses_arround(start_ops)
     return exemption_list
 end
 
+def reveal_points(grid_values, start_point)
+    game_state = "running"
+    points_to_revile = [start_point]
+    for i in points_to_revile
+        t_start_point = i.map(&:clone).join("").to_s.scan(/./).map {|e| e.to_i }
+        t_grid_values = grid_values.map(&:clone)
+        for i in t_grid_values
+            i.delete_at(2)
+        end
+        point_index = t_grid_values.find_index(t_start_point.to_a)
+        point = grid_values[point_index] 
+        if point[2] == 0
+            poses_arroung = get_poses_arround(start_point)
+            poses_arroung.delete(start_point)   
+            for i in poses_arroung
+                points_to_revile << i
+            end
+        end            
 
-def calculate(grid_values, user_input, game_state)
-    returning []
-    if game_state == "start"
-        game_state = "running"
+        if point[2] == "X"
+            game_state = "lost"
+
+        end
+        if point[2] == "S"
+            t_point = point.map(&:clone)
+            poses_arroung = get_poses_arround(t_point)
+            poses_arroung.delete(t_point)
+             
+            mines_next_to_point = 0 
+            for i in poses_arroung
+                t_mine_point = i.map(&:clone).join("").to_s.scan(/./).map {|e| e.to_i }
+                t_mine_values = grid_values.map(&:clone)
+                for i in t_mine_values
+                    i.delete_at(2)
+                end
+                mine_point = grid_values[t_mine_values.find_index(t_mine_point.to_a)]               
+                if  mine_point[2] == "X"
+                    mines_next_to_point = mines_next_to_point + 1
+                end
+            end
+            if mines_next_to_point == 0
+                for m in poses_arroung
+                    if points_to_revile.include?(m) == false
+                        points_to_revile << m
+                    end
+                end
+            end
+            point[2] = mines_next_to_point
+            grid_values[point_index] = point
+        end
     end
-    get_poses_arround(start_ops)
 
-    return [game_state, grid_values]
+    returned = [game_state, grid_values]
+    return returned
 end
 
 
 
+# def calculate(grid_values, user_input, game_state)
+#     user_input = alfa_to_int_and_swap(user_input)
+#     grid_test_point = user_input.map(&:clone) << "X"
+#     if grid_values.include?(grid_test_point) == true
+#         game_state = "lost"
+#         load_grid(grid_values, game_state)
+#         print_message(game_state)
+#         user_input = gets
+#         exit
+#     end
+#     grid_test_point = user_input.map(&:clone) << 0
+#     if grid_values.include?(grid_test_point) == true
+#         poses_arroung = get_poses_arround(user_input)
+#         poses_arroung.delete(user_input)
+#         for i in poses_arroung
+#             mines_around = calc_mines_arroung(i)
+#         end
+#     else
+#     mines_around = calc_mines_arroung(i)
+#     end
+
+
+#     poses_arroung = get_poses_arround(user_input)
+#     poses_arroung.delete(user_input)
+#     for i in poses_arroung
+#         mines_around = calc_mines_arroung(i)
+#     end
+    
+
+
+
+#     retured = [game_state, grid_values]
+#     return retured
+# end
+    
+    #user_input.delete_at(2)
+    #posses_arround = points_get_poses_arround(user_input)
+    
+
 puts `clear`
 game_state = "start"
 grid_values = create_starting_grid()
-while game_state == "running" or game_state == "start"
-    #puts `clear`
+while game_state != "lost" or game_state != "win"
+    puts `clear`
     load_grid(grid_values, game_state)
     print_message(game_state)
     user_input = gets
@@ -162,19 +258,19 @@ while game_state == "running" or game_state == "start"
     curect_user_input[0] = user_input_is_ok[1]
     curect_user_input[1] = user_input_is_ok[2]
     if user_input_is_ok[0] == true
+        
         if game_state == "start"
-            retured = create_first_game_grid(grid_values, curect_user_input)
-        else
-            retured = calculate(grid_values, curect_user_input, game_state)
+            game_state = "running"
+            grid_values = create_first_game_grid(grid_values, curect_user_input)
         end
+        retured = reveal_points(grid_values, curect_user_input)
+
+        #retured = calculate(grid_values, curect_user_input, game_state)
+
         game_state = retured[0]
         grid_values = retured[1]
     else
         game_state = "invalid input"
     end 
 end
-
-
-
-
 
