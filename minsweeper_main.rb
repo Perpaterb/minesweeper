@@ -105,7 +105,6 @@ end
 
 
 def create_first_game_grid(grid_values, user_input)
-    user_input = alfa_to_int_and_swap(user_input)
     user_input << "S"
     start_pos = grid_values.index(user_input)
     user_input[2] = 0
@@ -148,7 +147,7 @@ def get_poses_arround(start_ops)
     return exemption_list
 end
 
-def reveal_points(grid_values, start_point)
+def reveal_points(grid_values, start_point, let_first)
     game_state = "running"
     points_to_revile = [start_point]
     for i in points_to_revile
@@ -158,15 +157,14 @@ def reveal_points(grid_values, start_point)
             i.delete_at(2)
         end
         point_index = t_grid_values.find_index(t_start_point.to_a)
-        point = grid_values[point_index] 
-        if point[2] == 0
+        point = grid_values[point_index]
+        if point[2] == 0 and let_first == 1
             poses_arroung = get_poses_arround(start_point)
             poses_arroung.delete(start_point)   
             for i in poses_arroung
                 points_to_revile << i
             end
-        end            
-
+        end
         if point[2] == "X"
             game_state = "lost"
 
@@ -204,69 +202,47 @@ def reveal_points(grid_values, start_point)
     return returned
 end
 
+def test_for_win(grid_values, game_state) 
+    number_of_s = 0
+    for i in grid_values
+        if i[2] == "S"
+            number_of_s = number_of_s + 1
+        end
+    end
+    if number_of_s == 0
+        game_state = "win"
+    end
+    return game_state
+end 
 
-
-# def calculate(grid_values, user_input, game_state)
-#     user_input = alfa_to_int_and_swap(user_input)
-#     grid_test_point = user_input.map(&:clone) << "X"
-#     if grid_values.include?(grid_test_point) == true
-#         game_state = "lost"
-#         load_grid(grid_values, game_state)
-#         print_message(game_state)
-#         user_input = gets
-#         exit
-#     end
-#     grid_test_point = user_input.map(&:clone) << 0
-#     if grid_values.include?(grid_test_point) == true
-#         poses_arroung = get_poses_arround(user_input)
-#         poses_arroung.delete(user_input)
-#         for i in poses_arroung
-#             mines_around = calc_mines_arroung(i)
-#         end
-#     else
-#     mines_around = calc_mines_arroung(i)
-#     end
-
-
-#     poses_arroung = get_poses_arround(user_input)
-#     poses_arroung.delete(user_input)
-#     for i in poses_arroung
-#         mines_around = calc_mines_arroung(i)
-#     end
-    
-
-
-
-#     retured = [game_state, grid_values]
-#     return retured
-# end
-    
-    #user_input.delete_at(2)
-    #posses_arround = points_get_poses_arround(user_input)
-    
 
 puts `clear`
 game_state = "start"
 grid_values = create_starting_grid()
 while game_state != "lost" or game_state != "win"
+    game_state = test_for_win(grid_values, game_state)    
     puts `clear`
     load_grid(grid_values, game_state)
     print_message(game_state)
     user_input = gets
+    if game_state == "lost" or game_state == "win"
+        exit
+    end
     user_input_is_ok = check_user_input(user_input)
     curect_user_input = []
     curect_user_input[0] = user_input_is_ok[1]
     curect_user_input[1] = user_input_is_ok[2]
+    t_user_input = curect_user_input.map(&:clone)
+    t_user_input = alfa_to_int_and_swap(t_user_input)
+    let_first = 0
     if user_input_is_ok[0] == true
         
         if game_state == "start"
+            let_first = 1
             game_state = "running"
-            grid_values = create_first_game_grid(grid_values, curect_user_input)
+            grid_values = create_first_game_grid(grid_values, t_user_input)
         end
-        retured = reveal_points(grid_values, curect_user_input)
-
-        #retured = calculate(grid_values, curect_user_input, game_state)
-
+        retured = reveal_points(grid_values, t_user_input, let_first)
         game_state = retured[0]
         grid_values = retured[1]
     else
