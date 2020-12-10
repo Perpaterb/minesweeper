@@ -64,7 +64,7 @@ end
 def print_message(game_state)
     if game_state == "start"
         puts""
-        print "What grid point would you like to start at? column row eg. a1 or a 1 :"
+        print font.write("What grid point would you like to start at? column row eg. a1 or a 1 :")
     end
     if game_state == "win"
         puts""
@@ -239,17 +239,17 @@ end
 puts `clear`
 # set the game state to start
 game_state = "start"
-# Create the starting grid with the "creating the starting grid" function: See line 15
+# Create the starting grid with the "creating the starting grid" function
 grid_values = create_starting_grid()
 # Start main game while loop.
 while game_state != "lost" or game_state != "win"
-    # 1st see if the the game is won of not with the "Test for win" function: See line 222
+    # 1st see if the game is won of not with the "Test for win" function
     game_state = test_for_win(grid_values, game_state)
     # 2nd clearing the terminal screen 
     puts `clear`
-    # 3rd load and grid with and print it to screen with the "Load Grid" function: See line 27
+    # 3rd load the grid and print it to screen with the "Load Grid" function
     load_grid(grid_values, game_state)
-    # 4th print the message to the user with the "print message" function : See line 64
+    # 4th print the message to the user with the "print message" function 
     print_message(game_state)
     # 5th pause while we ask the user for input. 
     user_input = gets
@@ -257,23 +257,25 @@ while game_state != "lost" or game_state != "win"
     if game_state == "lost" or game_state == "win"
         exit
     end
-    # 7th take the user input and Check it with the "check user input" function : See line 88
+    # 7th take the user input and Check it with the "check user input" function
     user_input_is_ok = check_user_input(user_input)
     # 8th Get the output from "check user input" function and remap to new Array Var.
     curect_user_input = []
     curect_user_input[0] = user_input_is_ok[1]
     curect_user_input[1] = user_input_is_ok[2]
     t_user_input = curect_user_input.map(&:clone)
+    # 9th change the alfa charicter in the user input to an int 1-9 for a-i using the "Alfa to int" function
     t_user_input = alfa_to_int_and_swap(t_user_input)
     let_first = 0
-    # if the users input is OK then run the calculation. else game_state = "invalid input".
+    # 10th if the users input is OK then run the calculation. else game_state = "invalid input".
     if user_input_is_ok[0] == true
-        # if the game_state = "start" then change game_state to "running" and run the "create first game grid" function.
+        # 11th if the game_state = "start" then change game_state to "running" and run the "create first game grid" function.
         if game_state == "start"
             let_first = 1
             game_state = "running"
             grid_values = create_first_game_grid(grid_values, t_user_input)
         end
+        # 12th Reveal all the point needed 
         retured = reveal_points(grid_values, t_user_input, let_first)
         game_state = retured[0]
         grid_values = retured[1]
@@ -281,4 +283,5 @@ while game_state != "lost" or game_state != "win"
         game_state = "invalid input"
     end 
 end
+
 
