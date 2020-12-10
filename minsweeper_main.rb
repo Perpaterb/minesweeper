@@ -1,3 +1,4 @@
+# This is a class for collouring text in the terminal.
 class String
     def black;          "\033[30m#{self}\033[0m" end
     def red;            "\033[31m#{self}\033[0m" end
@@ -9,6 +10,8 @@ class String
     def gray;           "\033[37m#{self}\033[0m" end
 end
 
+# This is creating the starting gring array 9 by 9 each array is [Row , column, state]
+# The default empty state is "S"
 def create_starting_grid()
     grid_values = []
     for a in 1..9
@@ -20,6 +23,7 @@ def create_starting_grid()
     return grid_values
 end
 
+# this is the load grind function that will print the Grid to the screen
 def load_grid(grid_values, game_state)
     columns = "ABCDEFGHI".chars
     print "  "
@@ -56,6 +60,7 @@ def load_grid(grid_values, game_state)
     end 
 end
 
+# this is the print message function that will print a mesage baced on the game state. start,win,lost,running,invalid input
 def print_message(game_state)
     if game_state == "start"
         puts""
@@ -79,6 +84,7 @@ def print_message(game_state)
     end
 end
 
+# this is the chack user input functoion that will make sure a valid input has been enterd. eg. a1 or A1
 def check_user_input(user_input)
     passback = []
     passback[0] = false
@@ -91,6 +97,9 @@ def check_user_input(user_input)
     return passback
 end
 
+
+# this is the Alfa to int function that turns the users input for Column in to an int 1-9 for a-i
+# this function also flips the input so that it is now Row,Column not Column,Row as the user ented. this is to make printing the the terminal screen easy
 def alfa_to_int_and_swap(user_input)
     alfa = 1
         for i in ("a".."i")
@@ -103,7 +112,7 @@ def alfa_to_int_and_swap(user_input)
     user_input[0], user_input[1] = user_input[1], user_input[0]
 end
 
-
+# this is he Create first game grid function that takes the first input of the user and returns the grid after loading mine positions
 def create_first_game_grid(grid_values, user_input)
     user_input << "S"
     start_pos = grid_values.index(user_input)
@@ -113,6 +122,7 @@ def create_first_game_grid(grid_values, user_input)
     return grid_values
 end 
 
+# this is the load mine positions function that puts random mines on the grid everywere but the starting point and the 8 grid points arroind it
 def load_mine_poses(grid_values, start_ops)
     mines = []
     exemption_list = get_poses_arround(start_ops)
@@ -132,6 +142,7 @@ def load_mine_poses(grid_values, start_ops)
     return grid_values
 end
 
+# this is the get grid positions arround function that get the 8 grid points around a point if they they are on the board. e.g a1 only has 3 grid points arroind it. 
 def get_poses_arround(start_ops)
     exemption_list = []
     start_ops.delete_at(2)
@@ -147,6 +158,11 @@ def get_poses_arround(start_ops)
     return exemption_list
 end
 
+# this is the reveal points function that from a starting points reveals the start point. 
+#       if it is a mine that game_state = "lost"
+#       if it is not a mine reveals the number of mines next to it.
+#       if that number is 0 then reveal all the points around it. 
+#       if any of them are 0 then reveal all the all the points around them. 
 def reveal_points(grid_values, start_point, let_first)
     game_state = "running"
     points_to_revile = [start_point]
@@ -197,11 +213,12 @@ def reveal_points(grid_values, start_point, let_first)
             grid_values[point_index] = point
         end
     end
-
     returned = [game_state, grid_values]
     return returned
 end
 
+# this is the Test for win function that tests for the number of grid points with the "S" state. 
+#       if there are none left then the user has won!
 def test_for_win(grid_values, game_state) 
     number_of_s = 0
     for i in grid_values
@@ -216,27 +233,42 @@ def test_for_win(grid_values, game_state)
 end 
 
 
+# this is the Game
+
+# strat by clearing the terminal screen
 puts `clear`
+# set the game state to start
 game_state = "start"
+# Create the starting grid with the "creating the starting grid" function: See line 15
 grid_values = create_starting_grid()
+# Start main game while loop.
 while game_state != "lost" or game_state != "win"
-    game_state = test_for_win(grid_values, game_state)    
+    # 1st see if the the game is won of not with the "Test for win" function: See line 222
+    game_state = test_for_win(grid_values, game_state)
+    # 2nd clearing the terminal screen 
     puts `clear`
+    # 3rd load and grid with and print it to screen with the "Load Grid" function: See line 27
     load_grid(grid_values, game_state)
+    # 4th print the message to the user with the "print message" function : See line 64
     print_message(game_state)
+    # 5th pause while we ask the user for input. 
     user_input = gets
+    # 6th the main game loop is broken by game_state == "lost" or game_state == "win"
     if game_state == "lost" or game_state == "win"
         exit
     end
+    # 7th take the user input and Check it with the "check user input" function : See line 88
     user_input_is_ok = check_user_input(user_input)
+    # 8th Get the output from "check user input" function and remap to new Array Var.
     curect_user_input = []
     curect_user_input[0] = user_input_is_ok[1]
     curect_user_input[1] = user_input_is_ok[2]
     t_user_input = curect_user_input.map(&:clone)
     t_user_input = alfa_to_int_and_swap(t_user_input)
     let_first = 0
+    # if the users input is OK then run the calculation. else game_state = "invalid input".
     if user_input_is_ok[0] == true
-        
+        # if the game_state = "start" then change game_state to "running" and run the "create first game grid" function.
         if game_state == "start"
             let_first = 1
             game_state = "running"
