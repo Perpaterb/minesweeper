@@ -11,7 +11,7 @@ user_input = gets.chomp
 if card_3 == card_2 or card_3 == card_1
     answer = "fail"
 else
-    if card_3 > card_2 or card_3 < card_1
+    if card_3 > array[1] or card_3 < array[0]
         answer = "outside"
     else 
         answer = "inside"
