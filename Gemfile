@@ -13,3 +13,5 @@ gem "colorize", "~> 0.8.1"
 gem "tty-font", "~> 0.5.0"
 
 gem "simple-random", "~> 1.0"
+
+gem "ruby-progressbar", "~> 1.10"

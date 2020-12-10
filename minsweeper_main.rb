@@ -1,14 +1,16 @@
-# This is a class for collouring text in the terminal.
-class String
-    def black;          "\033[30m#{self}\033[0m" end
-    def red;            "\033[31m#{self}\033[0m" end
-    def green;          "\033[32m#{self}\033[0m" end
-    def brown;          "\033[33m#{self}\033[0m" end
-    def blue;           "\033[34m#{self}\033[0m" end
-    def magenta;        "\033[35m#{self}\033[0m" end
-    def cyan;           "\033[36m#{self}\033[0m" end
-    def gray;           "\033[37m#{self}\033[0m" end
-end
+# Gum for Coloured font
+require 'colorize'
+# Gum for font in title screen
+require 'tty-font'
+# Gum for font good random numbers for mine plasment.
+require 'simple-random'
+# Gum for loading bar game start
+require 'ruby-progressbar'
+
+fontblock = TTY::Font.new(:block)
+fontstr = TTY::Font.new(:straight)
+random = SimpleRandom.new 
+progressbar = ProgressBar.create(:title => "Loading", :starting_at => 0, :total => 50, format: "%t: |\e[0;34m%B\e[0m|")
 
 # This is creating the starting gring array 9 by 9 each array is [Row , column, state]
 # The default empty state is "S"
@@ -28,28 +30,28 @@ def load_grid(grid_values, game_state)
     columns = "ABCDEFGHI".chars
     print "  "
     for i in columns
-        print " #{i} ".cyan
+        print " #{i} ".colorize(:cyan)
     end
     puts ""
     
     for point_value in grid_values
         if point_value[1] == 1            
-            print "#{point_value[0]} ".cyan
+            print "#{point_value[0]} ".colorize(:cyan)
         end
         if point_value[2] == 0
-            print "[ ]".green
+            print "[ ]".colorize(:green)
         end 
         if point_value[2] == "S"
             print "   "
         end 
         if (1..8).include?(point_value[2])
-            print " #{point_value[2]} ".blue
+            print " #{point_value[2]} ".colorize(:blue)
         end 
         if point_value[2] == "X" and game_state == "lost"
-            print " #{point_value[2]} ".red
+            print " #{point_value[2]} ".colorize(:red)
         end 
         if point_value[2] == "X" and game_state == "win"
-            print " #{point_value[2]} ".magenta
+            print " #{point_value[2]} ".colorize(:magenta)
         end 
         if point_value[2] == "X" and game_state != "lost" and game_state != "win"
             print "   "
@@ -64,23 +66,23 @@ end
 def print_message(game_state)
     if game_state == "start"
         puts""
-        print font.write("What grid point would you like to start at? column row eg. a1 or a 1 :")
+        print "What grid point would you like to start at? column row eg. a1 or a 1 :".colorize(:white)
     end
     if game_state == "win"
         puts""
-        print "Congratulations you win!!    press enter to exit "
+        print "Congratulations you win!!    press enter to exit ".colorize(:white)
     end
     if game_state == "lost"
         puts""
-        print "Sorry you lost..  press enter to exit "
+        print "Sorry you lost..  press enter to exit ".colorize(:white)
     end
     if game_state == "running"
         puts""
-        print "What grid point do you think does not have a mine?  "
+        print "What grid point do you think does not have a mine?  ".colorize(:white)
     end
     if game_state == "invalid input"
         puts""
-        print "invalid input try again:  column row eg. a1 or a 1 "
+        print "invalid input try again:  column row eg. a1 or a 1 ".colorize(:white)
     end
 end
 
@@ -128,7 +130,8 @@ def load_mine_poses(grid_values, start_ops)
     exemption_list = get_poses_arround(start_ops)
     mines_placed = 0
     while mines_placed < 10
-        mine_test = [rand(1..9),rand(1..9)]
+        # Using Gen to randomise numbers
+        mine_test = [random.uniform(1, 9.99999).to_i,random.uniform(1, 9.99999).to_i]
         if exemption_list.include?(mine_test) == false
             mines_placed = mines_placed + 1
             exemption_list << mine_test
@@ -237,6 +240,9 @@ end
 
 # strat by clearing the terminal screen
 puts `clear`
+# Welcome page 
+puts (fontblock.write("MINESWEEPER")).colorize(:blue)
+50.times { progressbar.increment; sleep(0.05) }
 # set the game state to start
 game_state = "start"
 # Create the starting grid with the "creating the starting grid" function
