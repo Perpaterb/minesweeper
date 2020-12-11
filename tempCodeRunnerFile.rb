@@ -1,1 +1,0 @@
-50.times { progressbar.increment; sleep(0.05) }
