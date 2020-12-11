@@ -9,8 +9,9 @@ require 'ruby-progressbar'
 
 fontblock = TTY::Font.new(:block)
 fontstr = TTY::Font.new(:straight)
-random = SimpleRandom.new 
 progressbar = ProgressBar.create(:title => "Loading", :starting_at => 0, :total => 50, format: "%t: |\e[0;34m%B\e[0m|")
+
+
 
 # This is creating the starting gring array 9 by 9 each array is [Row , column, state]
 # The default empty state is "S"
@@ -63,9 +64,10 @@ def load_grid(grid_values, game_state)
 end
 
 # this is the print message function that will print a mesage baced on the game state. start,win,lost,running,invalid input
-def print_message(game_state)
+def print_message(game_state, mine_number)
     if game_state == "start"
         puts""
+        puts "There are #{mine_number} mines"
         print "What grid point would you like to start at? column row eg. a1 or a 1 :".colorize(:white)
     end
     if game_state == "win"
@@ -78,10 +80,12 @@ def print_message(game_state)
     end
     if game_state == "running"
         puts""
+        puts "There are #{mine_number} mines"
         print "What grid point do you think does not have a mine?  ".colorize(:white)
     end
     if game_state == "invalid input"
         puts""
+        puts "There are #{mine_number} mines"
         print "invalid input try again:  column row eg. a1 or a 1 ".colorize(:white)
     end
 end
@@ -115,21 +119,22 @@ def alfa_to_int_and_swap(user_input)
 end
 
 # this is he Create first game grid function that takes the first input of the user and returns the grid after loading mine positions
-def create_first_game_grid(grid_values, user_input)
+def create_first_game_grid(grid_values, user_input, mine_number)
     user_input << "S"
     start_pos = grid_values.index(user_input)
     user_input[2] = 0
     grid_values[start_pos] = user_input.map(&:clone)
-    grid_values = load_mine_poses(grid_values, user_input)
+    grid_values = load_mine_poses(grid_values, user_input, mine_number)
     return grid_values
 end 
 
 # this is the load mine positions function that puts random mines on the grid everywere but the starting point and the 8 grid points arroind it
-def load_mine_poses(grid_values, start_ops)
+def load_mine_poses(grid_values, start_ops, mine_number)
+    random = SimpleRandom.new 
     mines = []
     exemption_list = get_poses_arround(start_ops)
     mines_placed = 0
-    while mines_placed < 10
+    while mines_placed < mine_number
         # Using Gen to randomise numbers
         mine_test = [random.uniform(1, 9.99999).to_i,random.uniform(1, 9.99999).to_i]
         if exemption_list.include?(mine_test) == false
@@ -240,12 +245,26 @@ def gets
     STDIN.gets
 end
 
+##### this is the Game
 
-
-# this is the Game
+# help
+if ARGV[0] == "-h" or ARGV[0] == "-help"
+    puts "Help Doc TBA"
+    exit!
+end
 
 # strat by clearing the terminal screen
 puts `clear`
+#comand line input for number of mines\ 
+mine_number = 10
+if ARGV[0] != nil 
+    cla = ARGV[0].tr('^0-9', '').to_i
+end
+if cla == 0 or cla == nil
+else
+    mine_number = cla
+end
+
 # Welcome page 
 puts (fontblock.write("MINESWEEPER")).colorize(:blue)
 50.times { progressbar.increment; sleep(0.05) }
@@ -262,7 +281,7 @@ while game_state != "lost" or game_state != "win"
     # 3rd load the grid and print it to screen with the "Load Grid" function
     load_grid(grid_values, game_state)
     # 4th print the message to the user with the "print message" function 
-    print_message(game_state)
+    print_message(game_state, mine_number)
     # 5th pause while we ask the user for input. 
     user_input = gets
     # 6th the main game loop is broken by game_state == "lost" or game_state == "win"
@@ -285,7 +304,7 @@ while game_state != "lost" or game_state != "win"
         if game_state == "start"
             let_first = 1
             game_state = "running"
-            grid_values = create_first_game_grid(grid_values, t_user_input)
+            grid_values = create_first_game_grid(grid_values, t_user_input, mine_number)
         end
         # 12th Reveal all the point needed 
         retured = reveal_points(grid_values, t_user_input, let_first)
