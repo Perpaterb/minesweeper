@@ -3,7 +3,7 @@ minesweeper ruby terminal app
 
 https://github.com/Perpaterb/minesweeper
 
-#### Minesweeper Development Plan
+### Minesweeper Development Plan
 
 
 R5  Develop a statement of purpose and scope for your application. It must include:
@@ -14,7 +14,6 @@ R5  Develop a statement of purpose and scope for your application. It must inclu
 
 300 - 500 words
 
-A5
 This is the classic windows game Minesweeper.
 
 Minesweeper is a logic game where a player is shown a grid of squares with the objective to open all the squares without riding a mine under them. Each time then play the mines are in random places in the grid.
@@ -27,18 +26,9 @@ how to run Minesweeper
 1
 
 
+### List of features 
 
-R6  Develop a list of features that will be included in the application. It must include:
-- at least THREE features
-- describe each feature
 
-Note: Ensure that your features above allow you to demonstrate your understanding of the following language elements and concepts:
-- use of variables and the concept of variable scope
-- loops and conditional control structures
-- error handling
-Consult with your educator to check your features are sufficient .  300 words (approx. 100 words per feature)
-
-A6
 Title screen with loading bar. The title screen shows a big logon of "minesweeper" and after the loading has finished will load straight into the main game view. 
 Display grid showing the game in the terminal window.
 When Game is lost the game shows the player where all the mines were in red. 
@@ -46,7 +36,7 @@ When Game is won the game shows the player where all the mines were in magenta.
 The player is shown an invalid input error and given a hint when there is something wrong with their input.
 
 
-#### Player interaction and experience.
+### Player interaction and experience.
 
 
 After starting Minesweeper and waiting for it to load on the title screen. The player's blank grid will be displayed on the screen.  
@@ -60,42 +50,96 @@ The player will repeat this process until all the non mine grid points have been
 If the player wins, the grid is fully reliled with all the mines shown as a magenta "X".
 If the player loses, the grid is fully reliled with all the mines shown as a red "X".
 
-R8  Develop a diagram which describes the control flow of your application. Your diagram must:
-- show the workflow/logic and/or integration of the features in your application for each feature.
-- utilise a recognised format or set of conventions for a control flow diagram, such as UML.
+### Flow Diagram
 
 A8
 
-R9  Develop an implementation plan which:
-- outlines how each feature will be implemented and a checklist of tasks for each feature
-- prioritise the implementation of different features, or checklist items within a feature
-- provide a deadline, duration or other time indicator for each feature or checklist/checklist-item
-Utilise a suitable project management platform to track this implementation plan
-> Your checklists for each feature should have at least 5 items.
-A9
+### Develop an implementation plan
+
+https://trello.com/b/fpymEhEa
 
 Display grid: Priority 1
-A Grid array is created. Nested in the Grid array are all the grid point arrays in row order. Each grid point array is made up of [row , column, state].
-Start by printing A-I for the Column indicators.
-Then run though the Grid array printing out based on the “state”. If the column is 1 then print the Increasing row indicator before it.
+DUE DATE: 18/12/2020
+Tasks: 
+Create Grid array
+Create 9x9 arrays for each grid point with [row , column, state] nested in Grid array
+Function to print Column indicators A-I
+Function to run through each point array printing out based on the “state”
+If the column is 1 in point array . print the Increasing row indicator before it.
+Test
 
-
-Invalid input error display: Priority 2
-Get user input.
-Take everything out of the user input that is not needed.
-If 
+Invalid input error display: Priority 2 
+DUE DATE: 18/12/2020
+Tasks: 
+Create Game State Var. starting, running, Invalid input, lost and win.
+Message to user will depend on what Game State is.
+Create Users messages for all the games state.
+Get User input and remove all un wanted characters and spaces only leaving alphanumeric characters.
+Check that prosessed User input is one a-i character followed by one int 1-9. if not Change Game start to invalid input and re-start main game loop
+Test
 
 Red X on game lost: Priority 3
+DUE DATE: 18/12/2020
+Tasks: 
+Install colorize gem
+If player picked a point that is a Mine then change Game State to Lost and re-start main game loop
+If at Game start is lost then print all mine points as "X" in Red
+Make sure there is a Player message for Game state lost.
+Test
+
 Magenta “X” on game win: Priority 4
+DUE DATE: 18/12/2020
+Tasks: 
+Install colorize gem
+Make function to get the number of revealed grid points
+The grid is 9x9 and has 10 mines so 71 points are not mines. If revealed points = 71 that set Game state to win.
+Make sure there is a User message for Game state win
+Test
+
 Title screen with loading: Priority 5
+DUE DATE: 18/12/2020
+Tasks: 
+Install TTY Font Gem
+Install ruby-progressbar
+Clear terminal window
+Puts "Minesweeper" is a nice big font and a colour.
+Create a progress bar. add it to the screen bellow the title.
+Start the progress bar running and to finish in about 3secs.
+On progress bar finished Clear terminal window and start the main game.
+Test
 
 
-R10 Design help documentation which includes a set of instructions which accurately describe how to use and install the application.
+### Help documentation 
+##### Installation
 
-You must include:
-- steps to install the application
-- any dependencies required by the application to operate
-- any system/hardware requirements
+
+
+##### Dependencies
+Ruby 2.7
+
+Bundler to install all the Gems
+Or
+gem "rspec", "~> 3.10"
+gem "colorize", "~> 0.8.1"
+gem "tty-font", "~> 0.5.0"
+gem "simple-random", "~> 1.0"
+gem "ruby-progressbar", "~> 1.10"
+
+##### System/hardware requirements
+Any System that can run a linux terminal.
+##### Command Line arguments
+Help 
+-help
+
+Number of mines 
+Default 10
+
+Enter an Integer after file path.
+e.g “ruby "/home/andrew/minesweeper-3/minsweeper_main.rb" 15”
+This command will run Minesweeper with 15 mines
+
+
+
 
 
 R11 An overview of your Terminal application    The main features and overall structure of your app
