@@ -1,14 +1,29 @@
-require 'colorize'
-require 'tty-font'
-require 'ruby-progressbar'
 require 'simple-random'
 
-fontblock = TTY::Font.new(:block)
-fontstr = TTY::Font.new(:straight)
 random = SimpleRandom.new 
-puts `clear`
-progressbar = ProgressBar.create(:title => "Loading", :starting_at => 0, :total => 50, format: "%t: |\e[0;34m%B\e[0m|")
-# puts random.uniform(1, 9.99999).to_i
+
+array = [] 
+array2 = [] 
+
+for i in 1..1000000
+    number = random.uniform(0, 21).to_i
+    if array[number] == nil
+        array[number] = 1
+    else
+        array[number] += 1
+    end
+
+    number = rand(0..20)
+    if array2[number] == nil
+        array2[number] = 1
+    else
+        array2[number] += 1
+    end
+end
+
+p array
+p array2
+
 # puts random.uniform(1, 9.99999).to_i
 # puts random.uniform(1, 9.99999).to_i
 # puts random.uniform(1, 9.99999).to_i
@@ -22,4 +37,4 @@ progressbar = ProgressBar.create(:title => "Loading", :starting_at => 0, :total 
 # puts "This is blue".colorize(:blue)
 # puts "This is light blue with red background".colorize(:color => :light_blue, :background => :red)
 # puts "This is blue text on red".blue.on_red
-50.times { progressbar.increment; sleep(0.05) }
+#50.times { progressbar.increment; sleep(0.05) }

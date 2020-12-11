@@ -235,6 +235,12 @@ def test_for_win(grid_values, game_state)
     return game_state
 end 
 
+# make sure gets works 
+def gets
+    STDIN.gets
+end
+
+
 
 # this is the Game
 
