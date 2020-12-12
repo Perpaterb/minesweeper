@@ -22,7 +22,20 @@ end
 
 # help
 if ARGV[0] == "-h" or ARGV[0] == "-help"
-    puts "Help Doc TBA"
+    puts "Minesweeper ruby terminal app help"
+    puts ""
+    puts "https://github.com/Perpaterb/minesweeper"
+    puts ""
+    puts "Run with Gems..."
+    puts "install Bundler"
+    puts "run bundle install"
+    puts "run ./run_minesweeper.sh to run the game."
+    puts "run ./run_minesweeper.sh -h or ./run_minesweeper.sh -help to see this help"
+    puts "run ./run_minesweeper.sh n n = number of mines." 
+    puts ""
+    puts "Run without Gems..."
+    puts "run ./run_nog_minesweeper.sh to run the game."
+    puts "run ./run_nog_minesweeper.sh n n = number of mines. "
     exit!
 end
 
