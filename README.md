@@ -75,7 +75,7 @@ run "./run_nog_minesweeper.sh n" n = number of mines.
 
 ### Flow Diagram
 
-![A8](img\MineSweeper_Flow.JPG)
+![](img/MineSweeper_Flow.JPG)
 
 ### Develop an implementation plan
 
