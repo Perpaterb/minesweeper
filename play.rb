@@ -35,7 +35,9 @@ if ARGV[0] != nil
 end
 if cla == 0 or cla == nil
 else
-    mine_number = cla
+    if cla < 73 and cla > 0
+        mine_number = cla
+    end
 end
 
 # Welcome page 

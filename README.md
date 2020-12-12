@@ -23,8 +23,17 @@ Turns out that Windows 10 doesn't come with the minesweeper by default. The aim 
 The target audience will be anyone wanting to solve a pimple logical puzzle without ads or get a nostalgic hit from back in the day when many working hours were wasted on Minesweeper or Solitaire. 
 
 how to run Minesweeper 
-1
 
+After installing see Help Installation bellow
+
+With Gems...
+run "./run_minesweeper.sh" to run the game.
+run "./run_minesweeper.sh -h" or "./run_minesweeper.sh -help" to see help
+run "./run_minesweeper.sh n" n = number of mines. 
+
+Without Gems...
+run "./run_nog_minesweeper.sh" to run the game.
+run "./run_nog_minesweeper.sh n" n = number of mines. 
 
 ### List of features 
 
@@ -111,8 +120,17 @@ Test
 
 ### Help documentation 
 ##### Installation
+With Gems... 
+1 install Ruby 2.7
+2 install Bundler
+3 download My Minesweeper app from git hub
+4 navigate to the main Minesweeper directory
+5 run "bundle install"
 
-
+Without Gems...
+1 install Ruby 2.7
+2 download My Minesweeper app from git hub
+3 navigate to the main Minesweeper directory
 
 ##### Dependencies
 Ruby 2.7
@@ -135,7 +153,7 @@ Number of mines
 Default 10
 
 Enter an Integer after file path.
-e.g “ruby "/home/andrew/minesweeper-3/minsweeper_main.rb" 15”
+e.g “./run_minesweeper.sh 15"
 This command will run Minesweeper with 15 mines
 
 
