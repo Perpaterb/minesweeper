@@ -95,10 +95,12 @@ def check_user_input(user_input)
     passback = []
     passback[0] = false
     user_input = user_input.strip.gsub(/[^0-9a-z ]/i, '').delete(' ').chars
-    if ("a".."i").to_a.include?(user_input[0].downcase) == true and (1..9).include?(user_input[1].to_i) == true
-        passback[0] = true
-        passback[1] = user_input[0].downcase
-        passback[2] = user_input[1].to_i
+    if user_input.length() == 2
+        if ("a".."i").to_a.include?(user_input[0].downcase) == true and (1..9).include?(user_input[1].to_i) == true
+            passback[0] = true
+            passback[1] = user_input[0].downcase
+            passback[2] = user_input[1].to_i
+        end
     end
     return passback
 end
