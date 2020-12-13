@@ -77,6 +77,7 @@ run "./run_nog_minesweeper.sh n" n = number of mines.
 
 ![A8](img/MineSweeper_Flow.JPG)
 
+
 ### Develop an implementation plan
 
 https://trello.com/b/fpymEhEa
