@@ -82,6 +82,10 @@ run "./run_nog_minesweeper.sh n" n = number of mines.
 
 https://trello.com/b/fpymEhEa
 
+![A9a](img/Trello1.JPG)
+
+![A9b](img/Trello2.JPG)
+
 Display grid: Priority 1
 DUE DATE: 18/12/2020
 Tasks: 
