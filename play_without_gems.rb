@@ -222,6 +222,26 @@ def gets
     STDIN.gets
 end
 
+# help
+if ARGV[0] == "-h" or ARGV[0] == "-help"
+    puts "Minesweeper ruby terminal app help"
+    puts ""
+    puts "https://github.com/Perpaterb/minesweeper"
+    puts ""
+    puts "Run with Gems..."
+    puts "install Bundler"
+    puts "run bundle install"
+    puts "run ./run_minesweeper.sh"
+    puts "Select the 'Full Minesweeper' option"
+    puts ""
+    puts "Run without Gems..."
+    puts "run ./run_minesweeper.sh"
+    puts "Select the 'Non gem Minesweeper' option"
+    puts ""
+    puts " Andrew for playing"
+    puts " feedback zcarss@gmail.com"
+    exit!
+end
 
 puts `clear`
 mine_number = 10

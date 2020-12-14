@@ -45,38 +45,31 @@ if test $error = 0; then
     echo "What Minesweeper version would you like to play?"
     echo "1: Full Minesweeper"
     echo "2: Non gem Minesweeper"
-    echo "3: Minesweeper help"
+    echo "H: Minesweeper help"
 else
     echo "Not all gems are installed"
     echo "You can still play Minesweeper....would you like to play?"
     echo "1: Non gem Minesweeper"
-    echo "2: Minesweeper help"
+    echo "H: Minesweeper help"
 fi
 
+read user_input_game
 
+if test ${user_input_game^^} = "H"; then
+    ruby play.rb -help
+    exit 1
+fi
 
+echo "How many mines would you like? default is 10"
 
+read user_input_mines
 
-
-
-
-
-
-# ruby -i
-
-# echo Would you like to 
-
-
-# if `gem list colorize -i`; then 
-#     echo "colorize gem is installed!"; 
-# else
-#     echo "colorize gem is NOT installed!";
-# fi
-
-
-
-# gem list <name> -i
-# read varname
-
-
-# ruby play.rb $1
+if test $error = 0; then
+    if test $user_input_game = 1; then
+        ruby play.rb $user_input_mines
+    else
+        ruby play_without_gems.rb $user_input_mines
+    fi
+else
+    ruby play_without_gems.rb $user_input_mines
+fi
