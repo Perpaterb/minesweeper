@@ -23,14 +23,21 @@ The target audience will be anyone wanting to solve a pimple logical puzzle with
 
 After installing see Help Installation bellow
 
+Option 1 (bash)
+$bash run_minesweeper.sh 
+
+This option will check that ruby and gems are installed and give appropriate options.
+
+Option 2 (Ruby file)
 With Gems...
-run "./run_minesweeper.sh" to run the game.
-run "./run_minesweeper.sh -h" or "./run_minesweeper.sh -help" to see help
-run "./run_minesweeper.sh n" n = number of mines. 
+$ruby play.rb
+$ruby play.rb -h (help)
+$ruby play.rb n (n = number of mines.)
 
 Without Gems...
-run "./run_nog_minesweeper.sh" to run the game.
-run "./run_nog_minesweeper.sh n" n = number of mines. 
+$ruby play_without_gems.rb
+$ruby play_without_gems.rb -h (help)
+$ruby play_without_gems.rb n (n = number of mines.)
 
 
 
@@ -147,7 +154,6 @@ Tasks:
 
   
 
-
 ### Help documentation 
 #### Installation
 With Gems... 
@@ -181,8 +187,6 @@ Bundler to install all the Gems
 
 Or
 
-gem "rspec", "~> 3.10"
-
 gem "colorize", "~> 0.8.1"
 
 gem "tty-font", "~> 0.5.0"
@@ -207,7 +211,7 @@ Any System that can run a Linux terminal.
 
 Default 10
 
-Enter an Integer after file path. e.g “./run_minesweeper.sh 15"
+Enter an integer after ruby file path. e.g “play.rb 15"
 
 This command will run Minesweeper with 15 mines
 
@@ -218,32 +222,5 @@ This command will run Minesweeper with 15 mines
 R11 An overview of your Terminal application    The main features and overall structure of your app
 R12 An overview of your code    An explanation of the important parts of your code
 
-
-R13 Implement features in the software development plan you have designed. You must utilise a range of programming concepts and structures using Ruby such as:
-- variables and variable scope
-- loops and conditional control structures
-- write and utilise simple functions
-- error handling
-- input and output
-- importing a Ruby Gem
-- using functions from a Ruby Gem
-R14 Apply DRY (Don’t Repeat Yourself) coding principles to all code produced.
-R15 Apply all style and conventions for the programming language consistently to all code produced.
-R16 Creates an application which runs without error and has features that are consistent with the development plan.
-R17 Design TWO tests which check that the application is running as expected.
-
-Each test should:
-- cover a different feature of the application
-- state what is being tested
-- provide at least TWO test cases and the expected results for each test case
-
-> An outline of the testing procedure and cases should be included with the source code of the application
-R18 Utilise source control throughout the development of the application by:
-- making regular commits (at least 20 commits) with a commit message that summarises the changes
-- pushing all commits to a remote repository
-R19 Utilise developer tools to facilitate the execution of the application:
-For example,
-- writing a script which turns the application into an executable; OR
-- packaging the application for use as a module or dependency
 
 
