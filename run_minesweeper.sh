@@ -1,5 +1,5 @@
 #!/bin/bash
-
+clear
 error=0
 
 echo Hi, welcome to my Ruby Minesweeper terminal app.

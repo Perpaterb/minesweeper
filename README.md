@@ -214,13 +214,3 @@ Default 10
 Enter an integer after ruby file path. e.g “play.rb 15"
 
 This command will run Minesweeper with 15 mines
-
-
-
-
-
-R11 An overview of your Terminal application    The main features and overall structure of your app
-R12 An overview of your code    An explanation of the important parts of your code
-
-
-
