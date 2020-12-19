@@ -11,7 +11,7 @@ This is the classic windows game Minesweeper running in a terminal window using 
 
 This application will let you play Minesweeper.
 
-Minesweeper is a logic game where a player is shown a grid of squares with the objective to open all the squares without riding a mine under them. Each time then play the mines are in random places in the grid.
+Minesweeper is a logic game where a player is shown a grid of squares with the objective to open all the squares without hitting a mine under them. Each time then play the mines are in random places in the grid.
 
 Turns out that Windows 10 doesn't come with the minesweeper by default. The aim of this terminal application is to provide entertainment and challenge players to solve the puzzle.
 
@@ -66,7 +66,7 @@ $ruby play_without_gems.rb n (n = number of mines.)
 
 4. The screen will be refreshed and the player will then see the updated grid on their screen.
 
-5. It is impossible for the starting point to be near or on a mine.
+5. It is impossible for the starting point to be near or on a mine. So the mine positions are generated after the starting point is selected by the player. 
 
 6. If the player was to enter anything other than an alphabetical character from (a to i) followed by a number from (1 to 9) the input would be invalid and the program will refresh the page and give the player the error "invalid input try again:  column row eg. a1 or a 1 ``. spaces and non alphanumeric characters are removed before processing the input. so "    A   !$  && 1\n" would still return "a1" and is a valid input.
 
@@ -82,16 +82,16 @@ $ruby play_without_gems.rb n (n = number of mines.)
 
 ### Flow Diagram
 
-![A8](img/MineSweeper_Flow.JPG)
+![A8](./img/MineSweeper_Flow.JPG)
 
 
 ### Develop an implementation plan
 
 https://trello.com/b/fpymEhEa
 
-![A9a](img/Trello1.JPG)
+![A9a](./img/Trello1.JPG)
 
-![A9b](img/Trello2.JPG)
+![A9b](./img/Trello2.JPG)
 
 Display grid: Priority 1
 DUE DATE: 18/12/2020
@@ -137,21 +137,13 @@ Title screen with loading: Priority 5
 DUE DATE: 18/12/2020
 Tasks: 
 - [x] Install TTY Font Gem
-
 - [x] Install ruby-progress bar
-
 - [x] Clear terminal window
-
 - [x] Puts "Minesweeper" is a nice big font and a colour.
-
 - [x] Create a progress bar. add it to the screen bellow the title.
-
 - [x] Start the progress bar running and to finish in about 3secs.
-
 - [x] On progress bar finished Clear terminal window and start the main game.
-
 - [x] Test
-
   
 
 ### Help documentation 
